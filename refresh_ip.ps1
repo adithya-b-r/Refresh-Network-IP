@@ -1,15 +1,6 @@
 # Refresh-Network-IP.ps1
 # This script will release and renew the IP address of network adapters.
 
-# Release current IP addresses
-Write-Host "Releasing IP address..."
-ipconfig /release
-
-# Wait for a moment before renewing
+Get-NetAdapter | Where-Object {$_.Status -eq "Up"} | Disable-NetAdapter -Confirm:$false
 Start-Sleep -Seconds 5
-
-# Renew IP addresses
-Write-Host "Renewing IP address..."
-ipconfig /renew
-
-Write-Host "IP address has been refreshed successfully!"
+Get-NetAdapter | Where-Object {$_.Status -eq "Disabled"} | Enable-NetAdapter -Confirm:$false
